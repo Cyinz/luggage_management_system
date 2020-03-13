@@ -29,6 +29,7 @@ class LoginPage extends StatelessWidget {
     return Form(
       key: Provide.value<LoginForm>(context).loginFormKey,
       child: ListView(
+        padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
         children: <Widget>[
           _formTitle(),
           _underLine(),
@@ -44,6 +45,9 @@ class LoginPage extends StatelessWidget {
   //  登陆表单标题
   Widget _formTitle() {
     return Container(
+      margin: EdgeInsets.only(
+        top: ScreenUtil().setHeight(300),
+      ),
       child: Text(
         "Login",
         style: TextStyle(
@@ -69,6 +73,9 @@ class LoginPage extends StatelessWidget {
   //  用户名输入框
   Widget _userLoginName(BuildContext context) {
     return Container(
+      margin: EdgeInsets.only(
+        top: ScreenUtil().setHeight(100),
+      ),
       child: TextFormField(
         decoration: InputDecoration(
           icon: Icon(Icons.person),
@@ -139,6 +146,9 @@ class LoginPage extends StatelessWidget {
   //  登陆按钮
   Widget _loginButton(BuildContext context) {
     return Container(
+      margin: EdgeInsets.only(
+        top: ScreenUtil().setHeight(150),
+      ),
       child: RaisedButton(
         color: Colors.black,
         shape: StadiumBorder(),
@@ -146,10 +156,25 @@ class LoginPage extends StatelessWidget {
           "登陆",
           style: TextStyle(
             color: Colors.white,
+            fontSize: ScreenUtil().setSp(60.0),
+            fontStyle: FontStyle.italic,
           ),
         ),
-        onPressed: () {},
+        onPressed: () {
+          if (Provide.value<LoginForm>(context)
+              .loginFormKey
+              .currentState
+              .validate()) {
+            Provide.value<LoginForm>(context).loginFormKey.currentState.save();
+            login(Provide.value<LoginForm>(context).username,
+                Provide.value<LoginForm>(context).password);
+          }
+        },
       ),
     );
+  }
+
+  //  登陆方法
+  login(String username, String password) {
   }
 }
