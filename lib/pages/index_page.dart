@@ -10,7 +10,7 @@ class IndexPage extends StatelessWidget {
         title: Text('data'),
       ),
       body: Center(
-        child: Text("center:${ScreenUtil.screenHeight}"),
+        child: Text("center"),
       ),
     );
   }
