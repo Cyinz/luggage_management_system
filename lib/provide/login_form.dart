@@ -15,6 +15,9 @@ class LoginForm with ChangeNotifier {
   //  改变隐藏密码小眼睛图标颜色
   Color eyeColor = Colors.grey;
 
+  //  登陆按钮是否被禁用
+  bool isDisabled = false;
+
   saveUserName(value) {
     username = value;
     notifyListeners();
@@ -29,6 +32,12 @@ class LoginForm with ChangeNotifier {
   isObscureChange() {
     isObscure = !isObscure;
     eyeColor = isObscure ? Colors.grey : Colors.blue;
+    notifyListeners();
+  }
+
+  //  改变登陆按钮是否被禁用状态
+  isDisabledChange() {
+    isDisabled = !isDisabled;
     notifyListeners();
   }
 }

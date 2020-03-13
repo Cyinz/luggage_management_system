@@ -1,6 +1,8 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:luggagemanagementsystem/provide/login_form.dart';
+import 'package:luggagemanagementsystem/service/service_method.dart';
 import 'package:provide/provide.dart';
 
 class LoginPage extends StatelessWidget {
@@ -160,21 +162,121 @@ class LoginPage extends StatelessWidget {
             fontStyle: FontStyle.italic,
           ),
         ),
-        onPressed: () {
-          if (Provide.value<LoginForm>(context)
-              .loginFormKey
-              .currentState
-              .validate()) {
-            Provide.value<LoginForm>(context).loginFormKey.currentState.save();
-            login(Provide.value<LoginForm>(context).username,
-                Provide.value<LoginForm>(context).password);
-          }
-        },
+        onPressed: Provide.value<LoginForm>(context).isDisabled
+            ? null
+            : () {
+                if (Provide.value<LoginForm>(context)
+                    .loginFormKey
+                    .currentState
+                    .validate()) {
+                  Provide.value<LoginForm>(context).isDisabledChange();
+                  Provide.value<LoginForm>(context)
+                      .loginFormKey
+                      .currentState
+                      .save();
+                  _login(Provide.value<LoginForm>(context).username,
+                      Provide.value<LoginForm>(context).password, context);
+                }
+              },
       ),
     );
   }
 
   //  登陆方法
-  login(String username, String password) {
+  _login(String username, String password, BuildContext context) async {
+    FormData formData = FormData.fromMap({
+      'userloginname': username,
+      'password': password,
+    });
+    // ignore: missing_return
+    postRequest('login', formData: formData).then((data) {
+//      print(data);
+//      showDialog(
+//          context: context,
+//          barrierDismissible: false,
+//          builder: (BuildContext context) {
+//            //  登陆成功
+//            if (data['status'] == 200) {
+//              return _successDialog(data, context);
+//            }
+//            //  登陆失败
+//            else {
+//              return _failureDialog(data['msg'], context);
+//            }
+//          });
+      //  登陆成功
+      if (data['status'] == 200) {
+        FormData formData2 = FormData.fromMap({
+          'token': data['data'],
+        });
+        postRequest('getuser', formData: formData2).then((data) {
+          if (data['status'] == 200) {
+            showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (BuildContext context) {
+                return _successDialog(data, context);
+              },
+            );
+          } else {
+            showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (BuildContext context) {
+                return _failureDialog("Token无效", context);
+              },
+            );
+          }
+        });
+      }
+      //  登陆失败
+      else {
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return _failureDialog(data['msg'], context);
+          },
+        );
+      }
+    });
+  }
+
+  //  登陆成功弹窗
+  Widget _successDialog(var data, BuildContext context) {
+    return Container(
+      child: AlertDialog(
+        title: Text("登陆成功"),
+        content: Text("欢迎您"),
+        actions: <Widget>[
+          FlatButton(
+            onPressed: () {
+              Provide.value<LoginForm>(context).isDisabledChange();
+              Navigator.pop(context);
+            },
+            child: Text("确认"),
+          ),
+        ],
+      ),
+    );
+  }
+
+  //  登陆失败弹窗
+  Widget _failureDialog(String msg, BuildContext context) {
+    return Container(
+      child: AlertDialog(
+        title: Text("登陆失败"),
+        content: Text(msg),
+        actions: <Widget>[
+          FlatButton(
+            onPressed: () {
+              Provide.value<LoginForm>(context).isDisabledChange();
+              Navigator.pop(context);
+            },
+            child: Text("确认"),
+          ),
+        ],
+      ),
+    );
   }
 }

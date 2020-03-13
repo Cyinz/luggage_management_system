@@ -4,9 +4,9 @@ import 'package:luggagemanagementsystem/routers/router_handler.dart';
 
 class Routes {
   static String root = "/";
+  static String index = "/index";
 
   static void configureRouters(Router router) {
-
     // 出现不存在的路径时
     router.notFoundHandler = new Handler(
       handlerFunc: (BuildContext context, Map<String, List<String>> params) {
