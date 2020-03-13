@@ -188,22 +188,7 @@ class LoginPage extends StatelessWidget {
       'userloginname': username,
       'password': password,
     });
-    // ignore: missing_return
     postRequest('login', formData: formData).then((data) {
-//      print(data);
-//      showDialog(
-//          context: context,
-//          barrierDismissible: false,
-//          builder: (BuildContext context) {
-//            //  登陆成功
-//            if (data['status'] == 200) {
-//              return _successDialog(data, context);
-//            }
-//            //  登陆失败
-//            else {
-//              return _failureDialog(data['msg'], context);
-//            }
-//          });
       //  登陆成功
       if (data['status'] == 200) {
         FormData formData2 = FormData.fromMap({
@@ -247,7 +232,7 @@ class LoginPage extends StatelessWidget {
     return Container(
       child: AlertDialog(
         title: Text("登陆成功"),
-        content: Text("欢迎您"),
+        content: Text("欢迎您,${data['data']['username']}"),
         actions: <Widget>[
           FlatButton(
             onPressed: () {
