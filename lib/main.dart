@@ -1,6 +1,5 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
-import 'package:luggagemanagementsystem/pages/index_page.dart';
 import 'package:luggagemanagementsystem/routers/application.dart';
 import 'package:luggagemanagementsystem/routers/routes.dart';
 
