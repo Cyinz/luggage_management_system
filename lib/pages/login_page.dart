@@ -90,6 +90,8 @@ class LoginPage extends StatelessWidget {
         validator: (value) {
           if (value.isEmpty) {
             return "用户名不能为空";
+          } else {
+            return null;
           }
         },
         onSaved: (value) {
@@ -120,6 +122,8 @@ class LoginPage extends StatelessWidget {
         validator: (value) {
           if (value.isEmpty) {
             return "密码不能为空";
+          } else {
+            return null;
           }
         },
         onSaved: (value) {
