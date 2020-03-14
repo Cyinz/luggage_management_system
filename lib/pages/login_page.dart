@@ -1,7 +1,9 @@
 import 'package:dio/dio.dart';
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:luggagemanagementsystem/provide/login_form.dart';
+import 'package:luggagemanagementsystem/routers/application.dart';
 import 'package:luggagemanagementsystem/service/service_method.dart';
 import 'package:provide/provide.dart';
 
@@ -101,6 +103,7 @@ class LoginPage extends StatelessWidget {
   Widget _password(BuildContext context) {
     return Container(
       child: TextFormField(
+        obscureText: Provide.value<LoginForm>(context).isObscure,
         decoration: InputDecoration(
           icon: Icon(Icons.keyboard),
           labelText: "请输入密码",
@@ -237,7 +240,9 @@ class LoginPage extends StatelessWidget {
           FlatButton(
             onPressed: () {
               Provide.value<LoginForm>(context).isDisabledChange();
-              Navigator.pop(context);
+//              Navigator.pop(context);
+              Application.router.navigateTo(context, '/index',
+                  replace: true, clearStack: true);
             },
             child: Text("确认"),
           ),
@@ -255,6 +260,10 @@ class LoginPage extends StatelessWidget {
         actions: <Widget>[
           FlatButton(
             onPressed: () {
+              Provide.value<LoginForm>(context)
+                  .loginFormKey
+                  .currentState
+                  .reset();
               Provide.value<LoginForm>(context).isDisabledChange();
               Navigator.pop(context);
             },

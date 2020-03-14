@@ -7,7 +7,7 @@ class IndexPage extends StatelessWidget {
     ScreenUtil.init(context, width: 1080, height: 1980);
     return Scaffold(
       appBar: AppBar(
-        title: Text('data'),
+        title: Text('智能酒店行李管理'),
       ),
       body: Center(
         child: Text("center"),
